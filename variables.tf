@@ -24,14 +24,15 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
+# eu-central-1 22.04 LTS
 variable "ami" {
   type    = string
-  default = "ami-0cbfa6bba4589dcbb"
+  default = "ami-01a93368cab494eb5"
 }
 
 variable "availability_zone" {
   type    = list(string)
-  default = ["ca-central-1a", "ca-central-1b", "ca-central-1d"]
+  default = ["eu-central-1a", "eu-central-1b", "eu-central-1d"]
 }
 
 variable "vpc_cidr" {
@@ -53,7 +54,7 @@ variable "target_application_port" {
 variable "private_key_location" {
   description = "Location of the private key"
   type        = string
-  default     = "aws_access_key.pem"
+  default     = "/home/ko/.ssh/ko_aws_rsa"
 }
 
 variable "mount_directory" {

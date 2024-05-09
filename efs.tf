@@ -14,20 +14,22 @@ resource "aws_efs_mount_target" "efs_mount_target_2" {
   security_groups = [aws_security_group.efs_sg.id]
 }
 
-resource "tls_private_key" "ssh" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
+# resource "tls_private_key" "ssh" {
+#   algorithm = "RSA"
+#   rsa_bits  = 4096
+# }
 
 resource "aws_key_pair" "aws_ec2_access_key" {
-  key_name_prefix = "efs_key"
-  public_key      = tls_private_key.ssh.public_key_openssh
+  # key_name_prefix = "efs_key"
+  key_name = "efs-key-pair"
+  # public_key      = tls_private_key.ssh.public_key_openssh
+  public_key = file("/home/ko/.ssh/ko_aws_rsa.pub")
 }
 
-resource "local_file" "private_key" {
-  content  = tls_private_key.ssh.private_key_pem
-  filename = var.private_key_location
-}
+# resource "local_file" "private_key" {
+#   content  = tls_private_key.ssh.private_key_openssh
+#   filename = var.private_key_location
+# }
 
 data "aws_instances" "production_instances" {
   instance_tags = {
@@ -35,42 +37,67 @@ data "aws_instances" "production_instances" {
   }
   depends_on = [
     aws_instance.production_1_instance,
-    aws_instance.production_2_instance
+    #aws_instance.production_2_instance
   ]
 }
 
 resource "null_resource" "install_script" {
-  count = 2
+  count = 1
 
   depends_on = [
     aws_db_instance.rds_master,
-    local_file.private_key,
+    #local_file.private_key,
     aws_efs_mount_target.efs_mount_target_1,
     aws_efs_mount_target.efs_mount_target_2,
     aws_instance.production_1_instance,
-    aws_instance.production_2_instance
+    #aws_instance.production_2_instance
   ]
 
   connection {
     type        = "ssh"
     host        = data.aws_instances.production_instances.public_ips[count.index]
-    user        = "ec2-user"
+    user        = "ubuntu"
     private_key = file(var.private_key_location)
   }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum update -y",
-      "sudo yum install docker -y",
-      "wget https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)",
-      "sudo mv docker-compose-$(uname -s)-$(uname -m) /usr/local/bin/docker-compose",
-      "sudo chmod -v +x /usr/local/bin/docker-compose",
-      "sudo systemctl enable docker.service",
-      "sudo systemctl start docker.service",
-      "sudo yum -y install amazon-efs-utils",
-      "sudo mkdir -p ${var.mount_directory}",
-      "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
-      "sudo docker run --name wordpress-docker -e WORDPRESS_DB_USER=${aws_db_instance.rds_master.username} -e WORDPRESS_DB_HOST=${aws_db_instance.rds_master.endpoint} -e WORDPRESS_DB_PASSWORD=${aws_db_instance.rds_master.password} -v ${var.mount_directory}:${var.mount_directory} -p 80:80 -d wordpress:4.8-apache",
-    ]
-  }
+#   provisioner "remote-exec" {
+#     inline = [
+#       "sudo apt update -y",
+#       # Add Docker's official GPG key:
+#       "sudo apt-get update",
+#       "sudo apt-get install ca-certificates curl",
+#       "sudo install -m 0755 -d /etc/apt/keyrings",
+#       "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
+#       "sudo chmod a+r /etc/apt/keyrings/docker.asc",
+
+# # Add the repository to Apt sources:
+#       "echo \",
+#       "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+#        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+#        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+#        sudo apt-get update
+#              "sudo apt -y install amazon-efs-utils",
+#              "sudo mkdir -p ${var.mount_directory}",
+#              "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
+#              "sudo docker run --name wordpress-docker -e WORDPRESS_DB_USER=${aws_db_instance.rds_master.username} -e WORDPRESS_DB_HOST=${aws_db_instance.rds_master.endpoint} -e WORDPRESS_DB_PASSWORD=${aws_db_instance.rds_master.password} -v ${var.mount_directory}:${var.mount_directory} -p 80:80 -d wordpress:4.8-apache",
+#     ]
+#   }
+
+provisioner "remote-exec" {
+  inline = [ 
+    "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
+    "sudo apt-get install -y ca-certificates curl gnupg lsb-release",
+    "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
+    "sudo chmod a+r /etc/apt/keyrings/docker.asc",
+    #"echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+    "sudo apt-get update",
+    "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+    "sudo usermod -aG docker ubuntu",
+    # "newgrp docker",
+    "sudo apt -y install nfs-common",
+    "sudo mkdir -p ${var.mount_directory}",
+    "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
+    "sudo docker run --name wordpress-docker -e WORDPRESS_DB_USER=${aws_db_instance.rds_master.username} -e WORDPRESS_DB_HOST=${aws_db_instance.rds_master.endpoint} -e WORDPRESS_DB_PASSWORD=${aws_db_instance.rds_master.password} -v ${var.mount_directory}:${var.mount_directory} -p 80:80 -d wordpress:4.8-apache",
+  ]
+}
 }

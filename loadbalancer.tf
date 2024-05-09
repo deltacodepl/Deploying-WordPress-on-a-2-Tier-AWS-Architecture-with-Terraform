@@ -26,14 +26,14 @@ resource "aws_lb_target_group_attachment" "attachment1" {
 }
 
 # attach target group to an instance
-resource "aws_lb_target_group_attachment" "attachment2" {
-  target_group_arn = aws_lb_target_group.target_group_alb.arn
-  target_id        = aws_instance.production_2_instance.id
-  port             = var.target_application_port
-  depends_on = [
-    aws_instance.production_2_instance,
-  ]
-}
+# resource "aws_lb_target_group_attachment" "attachment2" {
+#   target_group_arn = aws_lb_target_group.target_group_alb.arn
+#   target_id        = aws_instance.production_2_instance.id
+#   port             = var.target_application_port
+#   depends_on = [
+#     aws_instance.production_2_instance,
+#   ]
+# }
 
 # attach target group to a loadbalancer
 resource "aws_lb_listener" "external-elb" {

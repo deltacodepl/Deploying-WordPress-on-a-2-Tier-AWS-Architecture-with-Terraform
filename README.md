@@ -59,7 +59,7 @@ Create a file named [`provider.tf`](./provider.tf) with the following content:
 
 ```
 provider "aws" {
-  region = "ca-central-1"
+  region = "eu-central-1"
 }
 
 terraform {
@@ -75,7 +75,7 @@ The `provider.tf` file configures the AWS provider for Terraform by specifying t
 
 The resources defined in this file are:
 
-- **provider "aws"**: Specifies the AWS provider for Terraform. It sets the region to "ca-central-1", indicating that the resources will be provisioned in the AWS Canada (Central) region. The role of this resource is to authenticate Terraform with the specified AWS region and allow it to manage AWS resources.
+- **provider "aws"**: Specifies the AWS provider for Terraform. It sets the region to "eu-central-1", indicating that the resources will be provisioned in the AWS Canada (Central) region. The role of this resource is to authenticate Terraform with the specified AWS region and allow it to manage AWS resources.
 - **terraform block**: Defines the required providers for the Terraform configuration. In this case, it specifies that the "aws" provider is required with a specific version of **4.65.0**. This block ensures that the correct version of the AWS provider is used for the configuration.
 
 ### Step 2: Create VPC and Subnets
@@ -116,7 +116,7 @@ variable "ami" {
 
 variable "availability_zone" {
   type    = list(string)
-  default = ["ca-central-1a", "ca-central-1b", "ca-central-1d"]
+  default = ["eu-central-1a", "eu-central-1b", "eu-central-1d"]
 }
 
 variable "vpc_cidr" {
