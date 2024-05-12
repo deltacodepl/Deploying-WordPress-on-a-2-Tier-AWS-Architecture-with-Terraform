@@ -54,10 +54,21 @@ variable "target_application_port" {
 variable "private_key_location" {
   description = "Location of the private key"
   type        = string
-  default     = "/home/ko/.ssh/ko_aws_rsa"
+  # default     = "/home/ko/.ssh/ko_aws_rsa"
+  default = "/home/ko/.ssh/id_rsa_oak.pub"
 }
 
 variable "mount_directory" {
   type    = string
   default = "/var/www/html"
+}
+
+variable "bucket_name" {
+  type    = string
+  default = "my-s3-wordpress-bucket"
+}
+ 
+variable "s3_origin_id" {
+  type    = string
+  default = "my-s3-wordpress-origin"
 }

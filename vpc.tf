@@ -51,13 +51,13 @@ resource "aws_subnet" "database_private_subnet" {
 }
 
 #database read replica private subnet
-resource "aws_subnet" "database_read_replica_private_subnet" {
-  vpc_id                  = aws_vpc.infrastructure_vpc.id
-  cidr_block              = var.subnet_cidrs[3]
-  map_public_ip_on_launch = "false"
-  availability_zone       = var.availability_zone[0]
-  tags = {
-    Name = "database read replica private subnet"
-  }
-}
+# resource "aws_subnet" "database_read_replica_private_subnet" {
+#   vpc_id                  = aws_vpc.infrastructure_vpc.id
+#   cidr_block              = var.subnet_cidrs[3]
+#   map_public_ip_on_launch = "false"
+#   availability_zone       = var.availability_zone[0]
+#   tags = {
+#     Name = "database read replica private subnet"
+#   }
+# }
 

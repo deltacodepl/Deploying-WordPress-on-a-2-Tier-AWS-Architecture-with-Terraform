@@ -23,7 +23,8 @@ resource "aws_key_pair" "aws_ec2_access_key" {
   # key_name_prefix = "efs_key"
   key_name = "efs-key-pair"
   # public_key      = tls_private_key.ssh.public_key_openssh
-  public_key = file("/home/ko/.ssh/ko_aws_rsa.pub")
+  # public_key = file("/home/ko/.ssh/ko_aws_rsa.pub")
+  public_key = file("/home/ko/.ssh/id_rsa_oak.pub")
 }
 
 # resource "local_file" "private_key" {
@@ -83,6 +84,24 @@ resource "null_resource" "install_script" {
 #     ]
 #   }
 
+# provisioner "remote-exec" {
+#   inline = [ 
+#     "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
+#     "sudo apt-get install -y ca-certificates curl gnupg lsb-release",
+#     "sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc",
+#     "sudo chmod a+r /etc/apt/keyrings/docker.asc",
+#     #"echo \"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+#     "sudo apt-get update",
+#     "sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
+#     "sudo usermod -aG docker ubuntu",
+#     # "newgrp docker",
+#     "sudo apt -y install nfs-common",
+#     "sudo mkdir -p ${var.mount_directory}",
+#     "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
+#     "sudo docker run --name wordpress-docker -e WORDPRESS_DB_USER=${aws_db_instance.rds_master.username} -e WORDPRESS_DB_HOST=${aws_db_instance.rds_master.endpoint} -e WORDPRESS_DB_PASSWORD=${aws_db_instance.rds_master.password} -v ${var.mount_directory}:${var.mount_directory} -p 80:80 -d wordpress:4.8-apache",
+#   ]
+# }
+
 provisioner "remote-exec" {
   inline = [ 
     "sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get dist-upgrade -y && sudo apt-get autoremove -y && sudo apt-get autoclean -y",
@@ -97,7 +116,8 @@ provisioner "remote-exec" {
     "sudo apt -y install nfs-common",
     "sudo mkdir -p ${var.mount_directory}",
     "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
-    "sudo docker run --name wordpress-docker -e WORDPRESS_DB_USER=${aws_db_instance.rds_master.username} -e WORDPRESS_DB_HOST=${aws_db_instance.rds_master.endpoint} -e WORDPRESS_DB_PASSWORD=${aws_db_instance.rds_master.password} -v ${var.mount_directory}:${var.mount_directory} -p 80:80 -d wordpress:4.8-apache",
+    "git clone https://github.com/deltacodepl/joomla-docker-compose.git && cd joomla-docker-compose",
+    "sudo docker up -d",
   ]
 }
 }
