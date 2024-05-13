@@ -1,6 +1,6 @@
 variable "inbound_port_production_ec2" {
   type        = list(any)
-  default     = [22, 80]
+  default     = [22, 80, 443, 81, 3306, 3307]
   description = "inbound port allow on production instance"
 }
 
@@ -48,14 +48,14 @@ variable "subnet_cidrs" {
 
 variable "target_application_port" {
   type    = string
-  default = "80"
+  default = "443"
 }
 
 variable "private_key_location" {
   description = "Location of the private key"
   type        = string
-  # default     = "/home/ko/.ssh/ko_aws_rsa"
-  default = "/home/ko/.ssh/id_rsa_oak.pub"
+  default     = "/home/ko/.ssh/ko_aws_rsa"
+  #default = "/home/ko/.ssh/id_rsa_oak.pub"
 }
 
 variable "mount_directory" {
