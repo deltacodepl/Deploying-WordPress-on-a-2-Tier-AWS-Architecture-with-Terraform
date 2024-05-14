@@ -122,7 +122,7 @@ provisioner "remote-exec" {
     "sudo mkdir -p ${var.mount_directory}",
     "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
     "git clone https://github.com/deltacodepl/joomla-docker-compose.git",
-    "git clone https://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@github.com/deltacodepl/playec2.git",
+    "git clone https://${var.pat}@github.com/deltacodepl/playec2.git",
     "mv playec2/code joomla-docker-compose",
     "mv playec2/db.tgz joomla-docker-compose",
     "cd joomla-docker-compose > /dev/null 2>&1 && tar -xzvf db.tgz",

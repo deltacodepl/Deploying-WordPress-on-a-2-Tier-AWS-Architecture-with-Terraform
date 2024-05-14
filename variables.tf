@@ -58,6 +58,10 @@ variable "private_key_location" {
   #default = "/home/ko/.ssh/id_rsa_oak.pub"
 }
 
+variable "pat" {
+  type = string
+}
+
 variable "mount_directory" {
   type    = string
   default = "/var/www/html"
