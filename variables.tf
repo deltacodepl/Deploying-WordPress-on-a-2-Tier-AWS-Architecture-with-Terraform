@@ -60,7 +60,7 @@ variable "private_key_location" {
 
 variable "pat" {
   type = string
-  default = "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"
+  default = ""
 }
 
 variable "mount_directory" {
