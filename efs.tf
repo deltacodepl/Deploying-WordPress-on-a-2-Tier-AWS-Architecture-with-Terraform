@@ -115,17 +115,21 @@ provisioner "remote-exec" {
     "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin",
     "sudo usermod -aG docker ubuntu",
     # "newgrp docker",
-    "sudo DEBIAN_FRONTEND=noninteractive apt -y install nfs-common pkg-config libssl-dev openssl binutils",
+    "sudo DEBIAN_FRONTEND=noninteractive apt -y install nfs-common pkg-config libssl-dev openssl libssl-dev binutils",
     "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y",
     "source ~/.cargo/env",
     "git clone https://github.com/aws/efs-utils && cd efs-utils > /dev/null && ./build-deb.sh && sudo apt-get -y install ./build/amazon-efs-utils*deb ",
     "sudo mkdir -p ${var.mount_directory}",
     "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
     "git clone https://github.com/deltacodepl/joomla-docker-compose.git",
-    "cd joomla-docker-compose > /dev/null 2>&1",
+    "git clone https://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@github.com/deltacodepl/playec2.git",
+    "mv playec2/code joomla-docker-compose",
+    "mv playec2/db.tgz joomla-docker-compose",
+    "cd joomla-docker-compose > /dev/null 2>&1 && tar -xzvf db.tgz",
     "sudo docker network create joomla-network > /dev/null",
     "sudo docker network create traefik-network > /dev/null",
     "sudo docker compose up -d",
+    "",
   ]
 }
 }
