@@ -2,6 +2,7 @@ mykey-pair
 mykey-pair.pub
 .terraform
 .terraform.lock.hcl
+.terraform.tfstate.lock.info
 terraform.tfstate
 terraform.tfstate.backup
 user_data(exec).tpl

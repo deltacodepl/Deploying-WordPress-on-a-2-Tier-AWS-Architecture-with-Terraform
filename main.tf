@@ -10,7 +10,7 @@ resource "aws_instance" "production_1_instance" {
   }
   # root disk
   root_block_device {
-    volume_size           = "11"
+    volume_size           = "15"
     volume_type           = "gp2"
     encrypted             = true
     delete_on_termination = true
