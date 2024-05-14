@@ -54,12 +54,13 @@ variable "target_application_port" {
 variable "private_key_location" {
   description = "Location of the private key"
   type        = string
-  default     = "/home/ko/.ssh/ko_aws_rsa"
-  #default = "/home/ko/.ssh/id_rsa_oak.pub"
+  #default     = "/home/ko/.ssh/ko_aws_rsa"
+  default = "/home/ko/.ssh/id_rsa_ko"
 }
 
 variable "pat" {
   type = string
+  default = "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"
 }
 
 variable "mount_directory" {

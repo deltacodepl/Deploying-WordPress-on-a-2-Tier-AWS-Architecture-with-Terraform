@@ -23,8 +23,8 @@ resource "aws_key_pair" "aws_ec2_access_key" {
   # key_name_prefix = "efs_key"
   key_name = "efs-key-pair"
   # public_key      = tls_private_key.ssh.public_key_openssh
-  public_key = file("/home/ko/.ssh/ko_aws_rsa.pub")
-  # public_key = file("/home/ko/.ssh/id_rsa_oak.pub")
+  #public_key = file("/home/ko/.ssh/ko_aws_rsa.pub")
+  public_key = file("/home/ko/.ssh/id_rsa_ko.pub")
 }
 
 # resource "local_file" "private_key" {
@@ -119,15 +119,17 @@ provisioner "remote-exec" {
     "curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y",
     "source ~/.cargo/env",
     "git clone https://github.com/aws/efs-utils && cd efs-utils > /dev/null && ./build-deb.sh && sudo apt-get -y install ./build/amazon-efs-utils*deb ",
-    "sudo mkdir -p ${var.mount_directory}",
-    "sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
+    #"sudo mkdir -p ${var.mount_directory}",
+    #"sudo mount -t efs -o tls ${aws_efs_file_system.efs_volume.id}:/ ${var.mount_directory}",
+    "cd /home/ubuntu",
     "git clone https://github.com/deltacodepl/joomla-docker-compose.git",
     "git clone https://deltacodepl:${var.pat}@github.com/deltacodepl/playec2.git",
-    "pwd",
+    "echo $(pwd)",
     "cp -r playec2/code joomla-docker-compose",
     "mv playec2/db.tgz joomla-docker-compose",
     "cd joomla-docker-compose > /dev/null 2>&1 && tar -xzvf db.tgz",
     "mkdir -p db db2 && mv joomladb.sql db/ && mv countries.sql db2/",
+    "sudo chown -R www-data:www-data code",
     "sudo docker network create joomla-network > /dev/null",
     "sudo docker network create traefik-network > /dev/null",
     "sudo docker compose up -d",
