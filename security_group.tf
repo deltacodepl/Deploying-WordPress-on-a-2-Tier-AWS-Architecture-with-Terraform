@@ -14,7 +14,15 @@ resource "aws_security_group" "production-instance-sg" {
       cidr_blocks = ["109.207.149.51/32", "193.200.51.18/32"]
     }
   }
-
+   dynamic "ingress" {
+    for_each = var.web_ports
+    content {
+      from_port   = ingress.value
+      to_port     = ingress.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  }
   egress {
     from_port   = 0
     to_port     = 0

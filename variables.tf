@@ -1,9 +1,14 @@
 variable "inbound_port_production_ec2" {
   type        = list(any)
-  default     = [22, 80, 443, 81, 3306, 3307]
+  default     = [22, 81, 3306, 3307]
   description = "inbound port allow on production instance"
 }
 
+variable "web_ports" {
+  type = list(any)
+  default = [ 80, 443 ]
+  description = "web ports "
+}
 variable "db_name" {
   type    = string
   default = "wordpressdb"
