@@ -11,7 +11,7 @@ resource "aws_security_group" "production-instance-sg" {
       from_port   = ingress.value
       to_port     = ingress.value
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = ["109.207.149.51/32", "193.200.51.18/32"]
     }
   }
 

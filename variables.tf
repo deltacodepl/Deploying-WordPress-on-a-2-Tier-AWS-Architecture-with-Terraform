@@ -27,12 +27,14 @@ variable "instance_type" {
 # eu-central-1 22.04 LTS
 variable "ami" {
   type    = string
-  default = "ami-01a93368cab494eb5"
+  #default = "ami-01a93368cab494eb5"
+  default = "ami-09d3de625137ca0fc"
 }
 
 variable "availability_zone" {
   type    = list(string)
-  default = ["eu-central-1a", "eu-central-1b", "eu-central-1d"]
+  #default = ["eu-central-1a", "eu-central-1b", "eu-central-1d"]
+  default = [ "ap-southeast-2a", "ap-southeast-2b", "ap-southeast-2c" ]  
 }
 
 variable "vpc_cidr" {
