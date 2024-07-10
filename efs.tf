@@ -8,11 +8,11 @@ resource "aws_efs_mount_target" "efs_mount_target_1" {
   security_groups = [aws_security_group.efs_sg.id]
 }
 
-resource "aws_efs_mount_target" "efs_mount_target_2" {
-  file_system_id  = aws_efs_file_system.efs_volume.id
-  subnet_id       = aws_subnet.ec2_2_public_subnet.id
-  security_groups = [aws_security_group.efs_sg.id]
-}
+# resource "aws_efs_mount_target" "efs_mount_target_2" {
+#   file_system_id  = aws_efs_file_system.efs_volume.id
+#   subnet_id       = aws_subnet.ec2_2_public_subnet.id
+#   security_groups = [aws_security_group.efs_sg.id]
+# }
 
 # resource "tls_private_key" "ssh" {
 #   algorithm = "RSA"
@@ -49,7 +49,7 @@ resource "null_resource" "install_script" {
     #aws_db_instance.rds_master,
     #local_file.private_key,
     aws_efs_mount_target.efs_mount_target_1,
-    aws_efs_mount_target.efs_mount_target_2,
+    #aws_efs_mount_target.efs_mount_target_2,
     aws_instance.production_1_instance,
     #aws_instance.production_2_instance
   ]

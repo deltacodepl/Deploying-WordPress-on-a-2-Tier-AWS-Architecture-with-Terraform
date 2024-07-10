@@ -34,10 +34,10 @@ resource "aws_instance" "production_1_instance" {
 #   ]
 # }
 
-resource "aws_db_subnet_group" "database_subnet" {
-  name       = "db subnet"
-  subnet_ids = [aws_subnet.database_private_subnet.id, aws_subnet.database_read_replica_private_subnet.id]
-}
+# resource "aws_db_subnet_group" "database_subnet" {
+#   name       = "db subnet"
+#   subnet_ids = [aws_subnet.database_private_subnet.id, aws_subnet.database_read_replica_private_subnet.id]
+# }
 
 # resource "aws_db_instance" "rds_master" {
 #   identifier              = "master-rds-instance"
