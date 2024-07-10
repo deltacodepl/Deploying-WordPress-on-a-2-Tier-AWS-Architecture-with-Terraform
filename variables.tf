@@ -11,7 +11,7 @@ variable "web_ports" {
 }
 variable "db_name" {
   type    = string
-  default = "wordpressdb"
+  default = "joomladb"
 }
 
 variable "db_user" {
@@ -21,7 +21,7 @@ variable "db_user" {
 
 variable "db_password" {
   type    = string
-  default = "Wordpress-AWS2Tier"
+  default = "Joomla-AWS2Tier"
 }
 
 variable "instance_type" {
@@ -33,7 +33,8 @@ variable "instance_type" {
 variable "ami" {
   type    = string
   #default = "ami-01a93368cab494eb5"
-  default = "ami-09d3de625137ca0fc"
+  # default = "ami-09d3de625137ca0fc"
+  default = "ami-0375ab65ee943a2a6"
 }
 
 variable "availability_zone" {
@@ -77,10 +78,10 @@ variable "mount_directory" {
 
 variable "bucket_name" {
   type    = string
-  default = "my-s3-wordpress-bucket"
+  default = "s3-web-au-bucket"
 }
  
 variable "s3_origin_id" {
   type    = string
-  default = "my-s3-wordpress-origin"
+  default = "s3-web-au-origin"
 }

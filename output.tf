@@ -7,10 +7,10 @@ output "public_1_ip" {
 # }
 
 # print the DNS of load balancer
-output "lb_dns_name" {
-  description = "The DNS name of the load balancer"
-  value       = aws_lb.application_loadbalancer.dns_name
-}
+# output "lb_dns_name" {
+#   description = "The DNS name of the load balancer"
+#   value       = aws_lb.application_loadbalancer.dns_name
+# }
 
 # output "instance_public_key" {
 #   description = "Public key of efs_key"

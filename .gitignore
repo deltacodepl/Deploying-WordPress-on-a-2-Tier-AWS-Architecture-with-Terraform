@@ -9,3 +9,4 @@ user_data(exec).tpl
 banner.txt
 wordpress_tf.sh
 tapflo.out
+terraform.tfvars
