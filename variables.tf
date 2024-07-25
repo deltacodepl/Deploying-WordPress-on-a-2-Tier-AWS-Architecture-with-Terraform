@@ -26,8 +26,8 @@ variable "db_password" {
 
 variable "instance_type" {
   type    = string
-  default = "t2.micro"
-  #default = "t2.small"
+  #default = "t2.micro"
+  default = "t3.xlarge"
 }
 
 # eu-central-1 22.04 LTS
@@ -35,14 +35,14 @@ variable "ami" {
   type    = string
   #default = "ami-01a93368cab494eb5"
   # default = "ami-09d3de625137ca0fc"
-  default = "ami-0375ab65ee943a2a6"
+  # default = "ami-0375ab65ee943a2a6"
+  default = "ami-0df7505ae337f9e56"
 }
 
 variable "availability_zone" {
   type    = list(string)
   #default = ["eu-central-1a", "eu-central-1b", "eu-central-1d"]
-  #default = [ "ap-southeast-2b", "ap-southeast-2c" ]  
-  default = ["ap-southeast-2c" ]  
+  default = [ "ap-southeast-2a", "ap-southeast-2b" ]  
 }
 
 variable "vpc_cidr" {
